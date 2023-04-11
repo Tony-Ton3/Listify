@@ -24,12 +24,53 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Future signUp() async {
-    //
-    if (validatePassword()) {
+    //validate email and password is not empty first and password is at least 6 characters
+    if (_emailController.text.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Please enter your email'),
+            duration: Duration(seconds: 1)),
+      );
+      return;
+    } else if (_passwordController.text.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Please enter your password'),
+            duration: Duration(seconds: 1)),
+      );
+      return;
+    } else if (_passwordController.text.trim().length < 6) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Password must be at least 6 characters'),
+            duration: Duration(seconds: 1)),
+      );
+      return;
+    } else if (!validatePassword()) {
+      //if password does not match confirm password
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Passwords do not match, try again')),
+      );
+      return;
+    }
+
+    try {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
+      // user account created successfully
+      // do something here, like navigate to another page or show a success message
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'email-already-in-use') {
+        //if email already exists in firebase
+        // show an error message indicating that the email is already in use
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content: Text('The email you provided already exists'),
+              duration: Duration(seconds: 1)),
+        );
+      }
     }
   }
 

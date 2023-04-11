@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'forgot_pswd_page.dart';
 
 class LoginPage extends StatefulWidget {
   //VoidCallback is a function that takes no arguments and returns nothing
@@ -15,10 +16,43 @@ class _LoginPageState extends State<LoginPage> {
   final _passwordController = TextEditingController();
 
   Future signIn() async {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: _emailController.text.trim(),
-      password: _passwordController.text.trim(),
-    );
+    //checks if email and password fields are empty first before checking if user exists and the password is valid for that user
+    if (_emailController.text.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Please enter your email'),
+            duration: Duration(seconds: 1)),
+      );
+      return;
+    } else if (_passwordController.text.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Please enter your password'),
+            duration: Duration(seconds: 1)),
+      );
+      return;
+    } else {
+      try {
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim(),
+        );
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'user-not-found') {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content: Text('No user found for that email.'),
+                duration: Duration(seconds: 1)),
+          );
+        } else if (e.code == 'wrong-password') {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content: Text('Wrong password provided for that user.'),
+                duration: Duration(seconds: 1)),
+          );
+        }
+      }
+    }
   }
 
   @override
@@ -31,11 +65,6 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   elevation: 5,
-      //   title: const Text("TO-DO"),
-      //   centerTitle: true,
-      // ),
       backgroundColor: Colors.orange[300],
       body: SafeArea(
         child: Center(
@@ -60,41 +89,24 @@ class _LoginPageState extends State<LoginPage> {
               ),
               const SizedBox(height: 50),
               Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.white),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: Colors.black),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      hintText: 'Email',
-                      fillColor: Colors.orange[50],
-                      filled: true,
+                padding: const EdgeInsets.symmetric(horizontal: 25),
+                child: TextField(
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                    controller: _emailController,
-                  )
-                  //username container for userinput
-                  // child: Container(
-                  //   decoration: BoxDecoration(
-                  //       color: Colors.orange[50],
-                  //       border: Border.all(color: Colors.black),
-                  //       borderRadius: BorderRadius.circular(10)),
-                  //   child: const Padding(
-                  //     padding: EdgeInsets.only(left: 20),
-                  //     child: TextField(
-                  //       decoration: InputDecoration(
-                  //         //gets rid of unwanted border
-                  //         border: InputBorder.none,
-                  //         hintText: "Username",
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.black),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    hintText: 'Email',
+                    fillColor: Colors.orange[50],
+                    filled: true,
                   ),
+                  controller: _emailController,
+                ),
+              ),
               const SizedBox(height: 15),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -116,55 +128,38 @@ class _LoginPageState extends State<LoginPage> {
                   controller: _passwordController,
                 ),
               ),
-              // Padding(
-              //   padding: const EdgeInsets.symmetric(horizontal: 25),
-              //   //password container for userinput
-              //   child: Container(
-              //     decoration: BoxDecoration(
-              //         color: Colors.orange[50],
-              //         border: Border.all(color: Colors.black),
-              //         borderRadius: BorderRadius.circular(10)),
-              //     child: const Padding(
-              //       padding: EdgeInsets.only(left: 20),
-              //       child: TextField(
-              //         obscureText: true,
-              //         decoration: InputDecoration(
-              //           border: InputBorder.none,
-              //           hintText: "Password",
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
               const SizedBox(height: 15),
-              //login button
-              // Padding(
-              //   padding: const EdgeInsets.symmetric(horizontal: 100),
-              //   child: GestureDetector(
-              //     onTap: signIn,
-              //     child: Container(
-              //       padding: const EdgeInsets.all(20),
-              //       decoration: BoxDecoration(
-              //           color: Colors.amber[900],
-              //           border: Border.all(color: Colors.black),
-              //           borderRadius: BorderRadius.circular(10)),
-              //       child: const Center(
-              //         child: Text(
-              //           'Sign in',
-              //           style: TextStyle(
-              //             color: Colors.white,
-              //             fontSize: 15,
-              //             fontWeight: FontWeight.bold,
-              //           ),
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ForgotPasswordPage(),
+                          ),
+                        );
+                      },
+                      child: const Text(
+                        'Forgot Password?',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 15),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 125),
                 child: Material(
                   color: Colors.amber[900],
+                  borderRadius: BorderRadius.circular(8),
                   child: InkWell(
                     onTap: signIn,
                     child: Container(
