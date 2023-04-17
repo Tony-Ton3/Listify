@@ -41,14 +41,11 @@ class Task {
   final String title;
   final bool completed;
   final String imageUrl;
-  final String userId;
-
   Task({
     String? id,
     required this.title,
     required this.completed,
     required this.imageUrl,
-    required this.userId,
   }) : id = id ?? '';
 
   Map<String, dynamic> toMap() {
@@ -57,7 +54,6 @@ class Task {
       'title': title,
       'completed': completed,
       'imageUrl': imageUrl,
-      'userId': userId,
     };
   }
 }
@@ -133,20 +129,21 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
           title: title,
           completed: _completed,
           imageUrl: imageUrl ?? '',
-          userId: userId ?? '',
         );
-        final CollectionReference tasks =
-            FirebaseFirestore.instance.collection('tasks');
-        await tasks.doc(taskId).set(task.toMap());
+        final CollectionReference userTasks = FirebaseFirestore.instance
+            .collection('users')
+            .doc(userId)
+            .collection('tasks');
+        await userTasks.doc(taskId).set(task.toMap());
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Task added successfully!'),
+        ));
         _formKey.currentState?.reset();
         _titleController.clear();
         setState(() {
           _completed = false;
           _imageFile = null;
         });
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Task added successfully!'),
-        ));
         Navigator.pop(context); // navigate back to main screen
       }
     } catch (e) {
