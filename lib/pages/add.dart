@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 // import 'main.dart';
 
@@ -40,12 +41,14 @@ class Task {
   final String title;
   final bool completed;
   final String imageUrl;
+  final String userId;
 
   Task({
     String? id,
     required this.title,
     required this.completed,
     required this.imageUrl,
+    required this.userId,
   }) : id = id ?? '';
 
   Map<String, dynamic> toMap() {
@@ -54,6 +57,7 @@ class Task {
       'title': title,
       'completed': completed,
       'imageUrl': imageUrl,
+      'userId': userId,
     };
   }
 }
@@ -119,11 +123,17 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         final String title = _titleController.text.trim();
         final String taskId = DateTime.now().millisecondsSinceEpoch.toString();
         final String? imageUrl = await _uploadImage(taskId);
+
+        // get the user ID
+        final user = FirebaseAuth.instance.currentUser;
+        final userId = user?.uid;
+
         final Task task = Task(
           id: taskId,
           title: title,
           completed: _completed,
           imageUrl: imageUrl ?? '',
+          userId: userId ?? '',
         );
         final CollectionReference tasks =
             FirebaseFirestore.instance.collection('tasks');
