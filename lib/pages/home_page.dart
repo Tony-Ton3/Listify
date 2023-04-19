@@ -169,12 +169,15 @@ class _HomePageState extends State<HomePage> {
         },
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.amber,
         onPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute(builder: (context) => AddTaskScreen()),
           );
         },
-        child: const Icon(Icons.add),
+        child: const Icon(
+          Icons.add,
+        ),
       ),
     );
   }
