@@ -159,7 +159,8 @@ class _HomePageState extends State<HomePage> {
                   },
                   onLongPress: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => (const HomePage()),
+                      builder: (context) =>
+                          (const EditPage(title: 'Edit Page')),
                     ));
                   },
                 ),
