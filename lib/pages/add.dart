@@ -66,7 +66,6 @@ class AddTaskScreen extends StatefulWidget {
 class _AddTaskScreenState extends State<AddTaskScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _titleController = TextEditingController();
-  bool _completed = false;
   File? _imageFile;
 
   Future<void> _getImage() async {
@@ -133,7 +132,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         final Task task = Task(
           id: taskId,
           title: title,
-          completed: _completed,
+          completed: false,
           imageUrl: imageUrl ?? '',
         );
         final CollectionReference userTasks = FirebaseFirestore.instance
@@ -147,7 +146,6 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         _formKey.currentState?.reset();
         _titleController.clear();
         setState(() {
-          _completed = false;
           _imageFile = null;
         });
         Navigator.pop(context); // navigate back to main screen
@@ -180,26 +178,14 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
               TextFormField(
                 controller: _titleController,
                 decoration: const InputDecoration(
-                  labelText: 'Title',
+                  labelText: 'Task Name',
                   border: OutlineInputBorder(),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a title';
+                    return 'Please enter a task';
                   }
                   return null;
-                },
-              ),
-              const SizedBox(height: 16.0),
-              CheckboxListTile(
-                title: const Text('Completed'),
-                value: _completed,
-                onChanged: (value) {
-                  if (value != null) {
-                    setState(() {
-                      _completed = value;
-                    });
-                  }
                 },
               ),
               const SizedBox(height: 16.0),

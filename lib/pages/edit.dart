@@ -47,12 +47,12 @@ class _EditTaskPageState extends State<EditTaskPage> {
               TextFormField(
                 controller: _titleController,
                 decoration: const InputDecoration(
-                  labelText: 'Title',
+                  labelText: 'Enter a Task Name',
                   border: OutlineInputBorder(),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a title';
+                    return 'Please enter a task';
                   }
                   return null;
                 },
@@ -233,6 +233,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
       ));
       // ignore: use_build_context_synchronously
       Navigator.pop(context, updatedTask);
+      // ignore: use_build_context_synchronously
       Navigator.pop(context); //to end circular loading indicator
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
