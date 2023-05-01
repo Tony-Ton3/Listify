@@ -162,10 +162,10 @@ class _HomePageState extends State<HomePage> {
                     await tasks.doc(task.id).update({'completed': completed});
                   },
                   onLongPress: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) =>
-                          (const EditPage(title: 'Edit Page')),
-                    ));
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (context) => EditTaskPage(task: task)),
+                    );
                   },
                 ),
               );
