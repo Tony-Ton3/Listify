@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart'; //used to get current date
 import 'add.dart';
 import 'edit.dart';
 
@@ -55,14 +56,17 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser!;
-    final userId = user?.uid;
+    final userId = user.uid;
+    final currentDate = DateTime.now();
+    final formatter = DateFormat('EEE, MMM d, yyyy');
+    final formattedDate = formatter.format(currentDate);
 
     final CollectionReference tasks =
         FirebaseFirestore.instance.collection('users/$userId/tasks');
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Tasks'),
+        title: Text(formattedDate),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),

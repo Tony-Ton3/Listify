@@ -152,6 +152,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         });
         Navigator.pop(context); // navigate back to main screen
       }
+      Navigator.pop(context); //to end circular loading indicator
     } catch (e) {
       if (kDebugMode) {
         print('Error adding task: $e');

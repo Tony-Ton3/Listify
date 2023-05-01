@@ -14,7 +14,6 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-
   Future signIn() async {
     //loading circle
     showDialog(
@@ -30,6 +29,7 @@ class _LoginPageState extends State<LoginPage> {
             content: Text('Please enter your email'),
             duration: Duration(seconds: 1)),
       );
+      Navigator.of(context).pop();
       return;
     } else if (_passwordController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -37,6 +37,7 @@ class _LoginPageState extends State<LoginPage> {
             content: Text('Please enter your password'),
             duration: Duration(seconds: 1)),
       );
+      Navigator.of(context).pop();
       return;
     } else {
       try {
@@ -52,12 +53,14 @@ class _LoginPageState extends State<LoginPage> {
                 content: Text('No user found for that email.'),
                 duration: Duration(seconds: 1)),
           );
+          Navigator.of(context).pop();
         } else if (e.code == 'wrong-password') {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
                 content: Text('Wrong password provided for that user.'),
                 duration: Duration(seconds: 1)),
           );
+          Navigator.of(context).pop();
         }
       }
     }
@@ -81,10 +84,16 @@ class _LoginPageState extends State<LoginPage> {
             children: [
               Row(
                 children: const [
-                  SizedBox(width: 122),
-                  Icon(Icons.android),
-                  SizedBox(width: 65),
-                  Icon(Icons.apple),
+                  SizedBox(width: 118),
+                  Icon(
+                    Icons.android,
+                    color: Colors.green,
+                  ),
+                  SizedBox(width: 72),
+                  Icon(
+                    Icons.apple,
+                    color: Colors.grey,
+                  ),
                 ],
               ),
               //into text
@@ -93,6 +102,9 @@ class _LoginPageState extends State<LoginPage> {
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 40,
+                  fontFamily: 'Times', // replace with your desired font family
+                  decoration: TextDecoration.underline,
+                  color: Colors.white, // replace with your desired color
                 ),
               ),
               const SizedBox(height: 50),
@@ -136,6 +148,7 @@ class _LoginPageState extends State<LoginPage> {
                   controller: _passwordController,
                 ),
               ),
+
               const SizedBox(height: 15),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25),
