@@ -20,6 +20,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
 
   Future resetPassword() async {
     try {
+      //code that may throw an exception
       await FirebaseAuth.instance
           .sendPasswordResetEmail(email: _emailController.text.trim());
       ScaffoldMessenger.of(context).showSnackBar(
@@ -27,6 +28,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       );
       return;
     } on FirebaseAuthException catch (e) {
+      //code to handle exceptions
       if (e.code == 'user-not-found') {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(

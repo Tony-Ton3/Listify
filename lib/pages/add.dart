@@ -112,6 +112,12 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   }
 
   Future<void> _addTask() async {
+    showDialog(
+      context: context,
+      builder: (contex) {
+        return const Center(child: CircularProgressIndicator());
+      },
+    );
     try {
       final FormState? form = _formKey.currentState;
       if (form != null && form.validate()) {

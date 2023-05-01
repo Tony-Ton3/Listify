@@ -16,6 +16,13 @@ class _LoginPageState extends State<LoginPage> {
   final _passwordController = TextEditingController();
 
   Future signIn() async {
+    //loading circle
+    showDialog(
+      context: context,
+      builder: (contex) {
+        return const Center(child: CircularProgressIndicator());
+      },
+    );
     //checks if email and password fields are empty first before checking if user exists and the password is valid for that user
     if (_emailController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -37,6 +44,7 @@ class _LoginPageState extends State<LoginPage> {
           email: _emailController.text.trim(),
           password: _passwordController.text.trim(),
         );
+        Navigator.of(context).pop();
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -72,16 +80,16 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
+                  SizedBox(width: 122),
                   Icon(Icons.android),
-                  SizedBox(width: 42),
+                  SizedBox(width: 65),
                   Icon(Icons.apple),
                 ],
               ),
               //into text
               const Text(
-                'L O G I N',
+                'L I S T I F Y',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 40,
