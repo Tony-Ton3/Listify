@@ -157,10 +157,6 @@ class _HomePageState extends State<HomePage> {
                           ),
                         )
                       : const Icon(Icons.image),
-                  onTap: () async {
-                    final bool completed = !task.completed;
-                    await tasks.doc(task.id).update({'completed': completed});
-                  },
                   onLongPress: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(

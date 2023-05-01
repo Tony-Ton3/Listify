@@ -58,23 +58,11 @@ class _EditTaskPageState extends State<EditTaskPage> {
                 },
               ),
               const SizedBox(height: 16.0),
-              CheckboxListTile(
-                title: const Text('Completed'),
-                value: _completed,
-                onChanged: (value) {
-                  if (value != null) {
-                    setState(() {
-                      _completed = value;
-                    });
-                  }
-                },
-              ),
-              const SizedBox(height: 16.0),
               Row(
                 children: [
                   ElevatedButton(
                     onPressed: _getImage,
-                    child: const Text('Choose Image'),
+                    child: const Text('Choose New Image'),
                   ),
                   if (_imageFile != null || widget.task.imageUrl.isNotEmpty)
                     const SizedBox(width: 16.0),
