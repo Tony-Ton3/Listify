@@ -140,9 +140,12 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
             .doc(userId)
             .collection('tasks');
         await userTasks.doc(taskId).set(task.toMap());
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Task added successfully!'),
-        ));
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Task added successfully!'),
+            duration: Duration(seconds: 1),
+          ),
+        );
         _formKey.currentState?.reset();
         _titleController.clear();
         setState(() {
@@ -157,6 +160,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
       }
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Error adding task'),
+        duration: Duration(seconds: 1),
       ));
       Navigator.pop(context); // navigate back to main screen
     }
@@ -173,12 +177,13 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         child: Form(
           key: _formKey,
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               TextFormField(
                 controller: _titleController,
                 decoration: const InputDecoration(
-                  labelText: 'Task Name',
+                  labelText: 'Enter task here...',
                   border: OutlineInputBorder(),
                 ),
                 validator: (value) {
@@ -190,16 +195,17 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
               ),
               const SizedBox(height: 16.0),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
                     onPressed: _getImage,
-                    child: const Text('Choose Image'),
+                    child: const Text('Add photo'),
                   ),
                   if (_imageFile != null) const SizedBox(width: 16.0),
                   if (_imageFile != null)
                     ElevatedButton(
                       onPressed: _removeImage,
-                      child: const Text('Remove Image'),
+                      child: const Text('Discard photo'),
                     ),
                 ],
               ),
@@ -207,10 +213,10 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
               _imageFile != null
                   ? Center(
                       child: SizedBox(
-                        width: 50,
-                        height: 50,
+                        width: 200,
+                        height: 200,
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(25),
+                          borderRadius: BorderRadius.circular(10),
                           child: Image.file(
                             _imageFile!,
                             fit: BoxFit.cover,
@@ -222,7 +228,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
               const SizedBox(height: 16.0),
               ElevatedButton(
                 onPressed: _addTask,
-                child: const Text('Add Task'),
+                child: const Text('Create Task'),
               ),
             ],
           ),

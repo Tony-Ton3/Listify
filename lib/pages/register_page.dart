@@ -117,7 +117,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.black),
+                      borderSide: const BorderSide(color: Colors.blue),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     hintText: 'Email',
@@ -137,7 +137,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.black),
+                      borderSide: const BorderSide(color: Colors.blue),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     hintText: 'Password',
@@ -158,7 +158,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.black),
+                      borderSide: const BorderSide(color: Colors.blue),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     hintText: 'Confirm Password',
@@ -174,6 +174,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 padding: const EdgeInsets.symmetric(horizontal: 125),
                 child: Material(
                   color: Colors.amber[900],
+                  borderRadius: BorderRadius.circular(8),
                   child: InkWell(
                     onTap: signUp,
                     child: Container(
@@ -182,7 +183,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         child: Text(
                           'Register',
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Colors.black,
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
                           ),

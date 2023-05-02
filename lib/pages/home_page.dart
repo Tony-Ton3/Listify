@@ -65,6 +65,7 @@ class _HomePageState extends State<HomePage> {
         FirebaseFirestore.instance.collection('users/$userId/tasks');
 
     return Scaffold(
+      backgroundColor: Colors.orange[50],
       appBar: AppBar(
         title: Text(formattedDate),
         actions: [
@@ -86,98 +87,111 @@ class _HomePageState extends State<HomePage> {
                   Task.fromMap(doc.data() as Map<String, dynamic>, doc.id))
               .toList();
           // Show the list of tasks in a ListView widget
-          return ListView.builder(
-            itemCount: taskList.length,
-            itemBuilder: (BuildContext context, int index) {
-              final Task task = taskList[index];
+          return taskList.isEmpty //is taskList is empty
+              ? const Center(
+                  child: Text(
+                    'Add a task with bottom right button',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                )
+              : ListView.builder(
+                  itemCount: taskList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final Task task = taskList[index];
 
-              return Dismissible(
-                key: Key(task.id),
-                direction: DismissDirection.endToStart,
-                background: Container(
-                  color: Colors.red,
-                  child: const Align(
-                    alignment: Alignment.centerRight,
-                    child: Padding(
-                      padding: EdgeInsets.only(right: 16),
-                      child: Icon(Icons.delete, color: Colors.white),
-                    ),
-                  ),
-                ),
-                onDismissed: (_) async {
-                  await tasks.doc(task.id).delete();
-                },
-                child: ListTile(
-                  trailing: Checkbox(
-                    value: task.completed,
-                    onChanged: (bool? value) async {
-                      if (value != null) {
-                        await tasks.doc(task.id).update({'completed': value});
-                      }
-                    },
-                  ),
-                  title: Opacity(
-                    opacity: task.completed ? 0.5 : 1.0,
-                    child: Text(task.title),
-                  ),
-                  subtitle: Opacity(
-                    opacity: task.completed ? 0.5 : 1.0,
-                    child: Text(task.completed ? 'Completed' : 'Incomplete'),
-                  ),
-                  leading: task.imageUrl.isNotEmpty
-                      ? Opacity(
-                          opacity: task.completed ? 0.5 : 1.0,
-                          child: GestureDetector(
-                            onTap: () {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return Dialog(
-                                    child: Stack(
-                                      children: <Widget>[
-                                        SizedBox(
-                                          width: double.infinity,
-                                          height: 300,
-                                          child: Image.network(task.imageUrl),
-                                        ),
-                                        const Positioned(
-                                          top: 0,
-                                          right: 0,
-                                          child: CloseButton(),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                            child: CircleAvatar(
-                              backgroundImage: NetworkImage(task.imageUrl),
-                            ),
+                    return Dismissible(
+                      key: Key(task.id),
+                      direction: DismissDirection.endToStart,
+                      background: Container(
+                        color: Colors.red[300],
+                        child: const Align(
+                          alignment: Alignment.centerRight,
+                          child: Padding(
+                            padding: EdgeInsets.only(right: 16),
+                            child: Icon(Icons.delete, color: Colors.white),
                           ),
-                        )
-                      : const Icon(Icons.image),
-                  onLongPress: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                          builder: (context) => EditTaskPage(task: task)),
+                        ),
+                      ),
+                      onDismissed: (_) async {
+                        await tasks.doc(task.id).delete();
+                      },
+                      child: ListTile(
+                        trailing: Checkbox(
+                          value: task.completed,
+                          onChanged: (bool? value) async {
+                            if (value != null) {
+                              await tasks
+                                  .doc(task.id)
+                                  .update({'completed': value});
+                            }
+                          },
+                        ),
+                        title: Opacity(
+                          opacity: task.completed ? 0.5 : 1.0,
+                          child: Text(task.title),
+                        ),
+                        subtitle: Opacity(
+                          opacity: task.completed ? 0.5 : 1.0,
+                          child:
+                              Text(task.completed ? 'Completed' : 'Incomplete'),
+                        ),
+                        leading: task.imageUrl.isNotEmpty
+                            ? Opacity(
+                                opacity: task.completed ? 0.5 : 1.0,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return Dialog(
+                                          child: Stack(
+                                            children: <Widget>[
+                                              SizedBox(
+                                                width: double.infinity,
+                                                height: 300,
+                                                child: Image.network(
+                                                    task.imageUrl),
+                                              ),
+                                              const Positioned(
+                                                top: 0,
+                                                right: 0,
+                                                child: CloseButton(),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
+                                  child: CircleAvatar(
+                                    backgroundImage:
+                                        NetworkImage(task.imageUrl),
+                                  ),
+                                ),
+                              )
+                            : const Icon(Icons.image),
+                        onLongPress: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) => EditTaskPage(task: task)),
+                          );
+                        },
+                      ),
                     );
                   },
-                ),
-              );
-            },
-          );
+                );
         },
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.amber,
+        backgroundColor: Colors.orange[300],
+        elevation: 0,
         onPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute(builder: (context) => AddTaskScreen()),
           );
         },
         child: const Icon(
-          Icons.add,
+          Icons.add_task_outlined,
         ),
       ),
     );

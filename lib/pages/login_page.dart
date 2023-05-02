@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'forgot_pswd_page.dart';
 
 class LoginPage extends StatefulWidget {
-  //VoidCallback is a function that takes no arguments and returns nothing
+  //VoidCallback is a funciton that returns nothing
   final VoidCallback showRegisterPage;
   const LoginPage({super.key, required this.showRegisterPage});
 
@@ -12,16 +12,13 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
+  final _emailController =
+      TextEditingController(); //controller/keyboard for email input
+  final _passwordController =
+      TextEditingController(); //controller/keyboard for password input
   Future signIn() async {
     //loading circle
-    showDialog(
-      context: context,
-      builder: (contex) {
-        return const Center(child: CircularProgressIndicator());
-      },
-    );
+
     //checks if email and password fields are empty first before checking if user exists and the password is valid for that user
     if (_emailController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -29,7 +26,6 @@ class _LoginPageState extends State<LoginPage> {
             content: Text('Please enter your email'),
             duration: Duration(seconds: 1)),
       );
-      Navigator.of(context).pop();
       return;
     } else if (_passwordController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -37,30 +33,41 @@ class _LoginPageState extends State<LoginPage> {
             content: Text('Please enter your password'),
             duration: Duration(seconds: 1)),
       );
-      Navigator.of(context).pop();
       return;
     } else {
+      //otherwise both fields are filled check if crediential is correct
       try {
+        //if an exception is generated within try block, catch block would be executed to handle exception
+        showDialog(
+          context: context,
+          builder: (contex) {
+            return const Center(
+                child: CircularProgressIndicator()); //showing circular loading
+          },
+        );
         await FirebaseAuth.instance.signInWithEmailAndPassword(
+          //possible exception
           email: _emailController.text.trim(),
           password: _passwordController.text.trim(),
         );
         Navigator.of(context).pop();
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
+          //if email is NOT in firebase
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
                 content: Text('No user found for that email.'),
                 duration: Duration(seconds: 1)),
           );
-          Navigator.of(context).pop();
+          Navigator.of(context).pop(); //ending circular loading
         } else if (e.code == 'wrong-password') {
+          //if password is wrong and email IS in firebase
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
                 content: Text('Wrong password provided for that user.'),
                 duration: Duration(seconds: 1)),
           );
-          Navigator.of(context).pop();
+          Navigator.of(context).pop(); //ending circular loading
         }
       }
     }
@@ -68,6 +75,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void dispose() {
+    //to avoid memory leadks
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
@@ -76,13 +84,14 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.orange[300],
+      backgroundColor: Colors.orange[100],
       body: SafeArea(
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Row(
+                //formatting icons to be part of the title
                 children: const [
                   SizedBox(width: 118),
                   Icon(
@@ -98,26 +107,29 @@ class _LoginPageState extends State<LoginPage> {
               ),
               //into text
               const Text(
-                'L I S T I F Y',
+                'L I S T I F Y', //project name
                 style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 40,
-                  fontFamily: 'Times', // replace with your desired font family
-                  decoration: TextDecoration.underline,
-                  color: Colors.white, // replace with your desired color
-                ),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 40,
+                    fontFamily:
+                        'Times', // replace with your desired font family
+                    decoration: TextDecoration.underline,
+                    color: Colors.blue // replace with your desired color
+                    ),
               ),
               const SizedBox(height: 50),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
+                padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: TextField(
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
+                      //not clicked
                       borderSide: const BorderSide(color: Colors.white),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.black),
+                      //clicked
+                      borderSide: const BorderSide(color: Colors.blue),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     hintText: 'Email',
@@ -129,7 +141,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               const SizedBox(height: 15),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
+                padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: TextField(
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
@@ -137,7 +149,7 @@ class _LoginPageState extends State<LoginPage> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.black),
+                      borderSide: const BorderSide(color: Colors.blue),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     hintText: 'Password',
@@ -189,7 +201,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: Text(
                           'Sign-in',
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Colors.black,
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
                           ),
