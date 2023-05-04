@@ -72,10 +72,9 @@ class _LoginPageState extends State<LoginPage> {
       }
     }
   }
-
+//dispose is called when user navigagtes away from login page in order to avoid memory leaks
   @override
   void dispose() {
-    //to avoid memory leadks
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
@@ -169,6 +168,7 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     GestureDetector(
                       onTap: () {
+                        //pushes new route onto the navigation stack, displaying new page on the screen 
                         Navigator.push(
                           context,
                           MaterialPageRoute(
