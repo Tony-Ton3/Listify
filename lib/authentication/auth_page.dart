@@ -14,12 +14,12 @@ class _AuthPageState extends State<AuthPage> {
 
   void toggleScreens() {
     //toggle between login and register page by negating a bollean value
-    //setState notifies framework that the state needs to be rebuilt, calling build to update the state 
+    //setState notifies framework that the state needs to be rebuilt
     setState(() {
       showLoginPage = !showLoginPage;
     });
   }
-
+  //setState triggers build 
   @override
   Widget build(BuildContext context) {
     if (showLoginPage) {//on first start up user will see login page first 
