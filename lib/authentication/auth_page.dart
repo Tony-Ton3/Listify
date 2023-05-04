@@ -13,20 +13,20 @@ class _AuthPageState extends State<AuthPage> {
   bool showLoginPage = true;
 
   void toggleScreens() {
-    //toggle between login and register page by negating showLoginPage bool value
+    //toggle between login and register page by negating a bollean value
+    //setState notifies framework that the state needs to be rebuilt, calling build to update the state 
     setState(() {
       showLoginPage = !showLoginPage;
     });
   }
 
-  //on first start up, show the login page
   @override
   Widget build(BuildContext context) {
-    if (showLoginPage) {
-      //if user is registered
+    if (showLoginPage) {//on first start up user will see login page first 
+      //toggle to register page if user needs to register 
       return LoginPage(showRegisterPage: toggleScreens);
     } else {
-      //if user is NOT registered
+      //toggle back to login page if in register page 
       return RegisterPage(showLoginPage: toggleScreens);
     }
   }
