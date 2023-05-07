@@ -42,6 +42,7 @@ class _EditTaskPageState extends State<EditTaskPage> {
         child: Form(
           key: _formKey,
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               TextFormField(
@@ -59,15 +60,17 @@ class _EditTaskPageState extends State<EditTaskPage> {
               ),
               const SizedBox(height: 16.0),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
                     onPressed: _getImage,
-                    child: const Text('Choose New Image'),
+                    child: const Text('Take New Image'),
                   ),
                   if (_imageFile != null || widget.task.imageUrl.isNotEmpty)
                     const SizedBox(width: 16.0),
                   if (_imageFile != null || widget.task.imageUrl.isNotEmpty)
                     ElevatedButton(
+                      child: const Icon(Icons.delete),
                       onPressed: () {
                         setState(() {
                           _removeImage();
@@ -75,7 +78,6 @@ class _EditTaskPageState extends State<EditTaskPage> {
                           _imageUrlController.text = '';
                         });
                       },
-                      child: const Text('Remove Image'),
                     ),
                 ],
               ),
@@ -83,10 +85,10 @@ class _EditTaskPageState extends State<EditTaskPage> {
               _imageFile != null
                   ? Center(
                       child: SizedBox(
-                        width: 50,
-                        height: 50,
+                        width: 200,
+                        height: 200,
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(25),
+                          borderRadius: BorderRadius.circular(10),
                           child: Image.file(
                             _imageFile!,
                             fit: BoxFit.cover,

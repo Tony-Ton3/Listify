@@ -205,7 +205,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                   if (_imageFile != null)
                     ElevatedButton(
                       onPressed: _removeImage,
-                      child: const Text('Discard photo'),
+                      child: const Icon(Icons.delete),
                     ),
                 ],
               ),

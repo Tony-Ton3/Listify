@@ -72,6 +72,7 @@ class _LoginPageState extends State<LoginPage> {
       }
     }
   }
+
 //dispose is called when user navigagtes away from login page in order to avoid memory leaks
   @override
   void dispose() {
@@ -90,7 +91,7 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Row(
-                //formatting icons to be part of the title
+                //formatting icons
                 children: const [
                   SizedBox(width: 118),
                   Icon(
@@ -104,17 +105,15 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ],
               ),
-              //into text
+              //title
               const Text(
                 'L I S T I F Y', //project name
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 40,
-                    fontFamily:
-                        'Times', // replace with your desired font family
+                    fontFamily: 'Times',
                     decoration: TextDecoration.underline,
-                    color: Colors.blue // replace with your desired color
-                    ),
+                    color: Colors.blue),
               ),
               const SizedBox(height: 50),
               Padding(
@@ -168,7 +167,7 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        //pushes new route onto the navigation stack, displaying new page on the screen 
+                        //pushes new route onto the navigation stack, displaying new page on the screen
                         Navigator.push(
                           context,
                           MaterialPageRoute(

@@ -164,6 +164,7 @@ class _HomePageState extends State<HomePage> {
                                     );
                                   },
                                   child: CircleAvatar(
+                                    radius: 30,
                                     backgroundImage:
                                         NetworkImage(task.imageUrl),
                                   ),
